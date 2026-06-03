@@ -1,0 +1,15 @@
+[{
+  "Name": "codejump",
+  "Description": "Navigate through code, by jumping over functions...",
+  "Tags": ["bookmark"],
+  "Website": "https://github.com/xqtr/micro-codejump",
+  "Versions": [
+    {
+      "Version": "1.0.0",
+      "Url": "https://github.com/haqk/micro-bookmark/archive/v1.0.0.zip",
+      "Require": {
+        "micro": ">=2.0.0"
+      }
+    },
+  ]
+}]
