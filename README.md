@@ -31,9 +31,9 @@ Jump between definitions in multiple languages:
 
 | Command | Action |
 |--------|--------|
-| `codejump` | Jump to any symbol using external analyzer + fzf |
-| `defjumpdown` | Jump to next function/block |
-| `defjumpup` | Jump to previous function/block |
+| `codejump` | Jump to any symbol using external analyzer + fzf F4|
+| `defjumpdown` | Jump to next function/block CTRL+Down|
+| `defjumpup` | Jump to previous function/block CTRL+Up|
 
 ---
 
