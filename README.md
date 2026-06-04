@@ -126,3 +126,5 @@ MIT
 
 Based on ideas from Tero Karvinen’s micro-jump plugin
 Extended to be more visible appealed (fzf) and added functions to navigate via key bindinds, between functions.
+
+XQTR // cp737.net 

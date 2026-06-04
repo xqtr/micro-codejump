@@ -1,5 +1,11 @@
 VERSION = "1.0.0"
 
+-- a plugin to navigate through functions/classes
+-- codejump: uses fzf to display a list of all functions and choose from
+-- defjumpdown: finds the next function from the current position
+-- defjumpup: fund the previous function from the current position
+-- made by XQTR // cp737.net
+
 local config = import("micro/config")
 local shell = import("micro/shell")
 local micro = import("micro")
