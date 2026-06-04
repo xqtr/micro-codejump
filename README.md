@@ -9,6 +9,9 @@
 
 It is designed to mimic "structural navigation" features found in IDEs, but keep things lightweight and regex-based.
 
+
+![list](https://github.com/xqtr/micro-codejump/blob/main/list.png)
+
 ---
 
 ## Features
