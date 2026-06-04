@@ -1,6 +1,6 @@
 [{
   "Name": "codejump",
-  "Description": "Navigate through code, by jumping over functions...",
+  "Description": "Navigate through code, using fzf or keybindings",
   "Tags": ["navigate","code","fzf","bookmark"],
   "Website": "https://github.com/xqtr/micro-codejump",
   "Versions": [
