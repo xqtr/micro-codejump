@@ -1,11 +1,5 @@
 VERSION = "1.0.0"
 
--- a plugin to navigate through functions/classes
--- codejump: uses fzf to display a list of all functions and choose from
--- defjumpdown: finds the next function from the current position
--- defjumpup: fund the previous function from the current position
--- made by XQTR // cp737.net
-
 local config = import("micro/config")
 local shell = import("micro/shell")
 local micro = import("micro")
@@ -67,13 +61,15 @@ local patterns = {
 function init()
 	config.MakeCommand("codejump", codejumpCommand, config.NoComplete)
 	config.MakeCommand("defjumpdown", NavFuncNext, config.NoComplete)
-  config.MakeCommand("defjumpup", NavFuncPrev, config.NoComplete)
+  	config.MakeCommand("defjumpup", NavFuncPrev, config.NoComplete)
+  	config.MakeCommand("showcurrentfunction", ShowCurrentFunction, config.NoComplete)
   
-  config.TryBindKey("F4", "command:codejump", true)
-  config.TryBindKey("Ctrl-Up", "command:defjumpup", true)
-  config.TryBindKey("Ctrl-Down", "command:defjumpdown", true)
+  	config.TryBindKey("F4", "command:codejump", true)
+  	config.TryBindKey("Ctrl-Up", "command:defjumpup", true)
+  	config.TryBindKey("Ctrl-Down", "command:defjumpdown", true)
+  	config.TryBindKey("F5", "command:showcurrentfunction", true)
    
-  config.AddRuntimeFile("codejump", config.RTHelp, "help/codejump.md")
+  	config.AddRuntimeFile("codejump", config.RTHelp, "help/codejump.md")
 end
 
 function get_analyzer_path()
@@ -81,16 +77,16 @@ function get_analyzer_path()
 end
 
 function codejumpCommand(bp) -- bp BufPane
-		local filename = bp.Buf.Path
-		local cmd = string.format("bash -c \"'%s' '%s'|fzf --layout=reverse|cut -d':' -f1\"", get_analyzer_path(), filename)
-		local out = shell.RunInteractiveShell(cmd, false, true)
-		if tonumber(out) == nil then
-			micro.InfoBar():Message("Jump cancelled.")
-			return
-		end
-		local linenum = tonumber(out)-1
-		bp.Cursor.Y = linenum
-		micro.InfoBar():Message(string.format("Jumped to line ", linenum))
+	local filename = bp.Buf.Path
+	local cmd = string.format("bash -c \"'%s' '%s'|fzf --layout=reverse|cut -d':' -f1\"", get_analyzer_path(), filename)
+	local out = shell.RunInteractiveShell(cmd, false, true)
+	if tonumber(out) == nil then
+		micro.InfoBar():Message("Jump cancelled.")
+		return
+	end
+	local linenum = tonumber(out)-1
+	bp.Cursor.Y = linenum
+	micro.InfoBar():Message(string.format("Jumped to line ", linenum))
 end
 
 function lineMatches(ft, line)
@@ -150,4 +146,58 @@ end
 
 function NavFuncPrev(bp)
     findFunction(bp, false)
+end
+
+-- NEW: Find and display the current function
+-- Enhanced version: Show just the function name (optional)
+function ShowCurrentFunction(bp)
+    local buf = bp.Buf
+    local cur = bp.Cursor
+    local currentLine = cur.Y
+    local ft = buf.Settings["filetype"] or "unknown"
+    
+    local foundLine = -1
+    local foundText = ""
+    
+    -- First check if we're on a function line
+    local currentLineText = buf:Line(currentLine)
+    if currentLineText and lineMatches(ft, currentLineText) then
+        foundLine = currentLine
+        foundText = currentLineText
+    else
+        -- Search upward for function
+        local line = currentLine
+        while line >= 0 do
+            local txt = buf:Line(line)
+            if txt and lineMatches(ft, txt) then
+                foundLine = line
+                foundText = txt
+                break
+            end
+            line = line - 1
+        end
+    end
+    
+    if foundLine >= 0 and foundText ~= "" then
+        -- Extract just the function name (between def/class and the opening parenthesis or colon)
+        local cleanText = foundText:gsub("^%s+", "") -- Remove leading spaces
+        
+        -- For Python: extract function name after 'def' or 'async def'
+        if ft == "python" then
+            local name = cleanText:match("def%s+([%w_]+)") or 
+                        cleanText:match("async%s+def%s+([%w_]+)") or
+                        cleanText:match("class%s+([%w_]+)")
+            if name then
+                cleanText = cleanText:gsub("(%s*[:{])$", "") -- Remove trailing colon or brace
+                micro.InfoBar():Message(string.format("%s (line %d)", cleanText, foundLine + 1))
+                return
+            end
+        end
+        
+        -- For other languages: just show the line stripped of leading whitespace
+        local displayText = foundText:gsub("^%s+", "")
+        micro.InfoBar():Message(string.format("%s (line %d)", displayText, foundLine + 1))
+    else
+        micro.InfoBar():Message("No function found")
+    end
 end
