@@ -32,6 +32,10 @@ Jump between definitions in multiple languages:
 
 Pressing F5 will show on the status bar, the current function, the cursor is.
 
+### Find References of Word
+
+Pressing F9, will search for all the occrences of the word under the cursor in the text and display them with fzf. After you can select one and navigate to that line.
+
 ---
 
 ### Commands
@@ -42,13 +46,15 @@ Pressing F5 will show on the status bar, the current function, the cursor is.
 | `defjumpdown` | Jump to next function/block | CTRL+Down|
 | `defjumpup` | Jump to previous function/block | CTRL+Up|
 | `showcurrentfunction` | Show the definition of the function the cursor is | CTRL+Up|
+| `searchword` | Search Word and show on fzf | F9|
 
 ---
 
 ### Default keybindings
 
 - `F4` → `codejump`
-- - `F5` → `showcurrentfunction`
+- `F5` → `showcurrentfunction`
+- `F9` → `searchword`
 - `Ctrl + Down` → next function/block
 - `Ctrl + Up` → previous function/block
 
