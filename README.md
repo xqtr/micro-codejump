@@ -28,21 +28,27 @@ Jump between definitions in multiple languages:
 - JavaScript / Java (basic heuristics)
 - Markdown: headings (`#` through `######`)
 
+### Show Current Function
+
+Pressing F5 will show on the status bar, the current function, the cursor is.
+
 ---
 
 ### Commands
 
 | Command | Action |
 |--------|--------|
-| `codejump` | Jump to any symbol using external analyzer + fzf F4|
-| `defjumpdown` | Jump to next function/block CTRL+Down|
-| `defjumpup` | Jump to previous function/block CTRL+Up|
+| `codejump` | Jump to any symbol using external analyzer + fzf | F4|
+| `defjumpdown` | Jump to next function/block | CTRL+Down|
+| `defjumpup` | Jump to previous function/block | CTRL+Up|
+| `showcurrentfunction` | Show the definition of the function the cursor is | CTRL+Up|
 
 ---
 
 ### Default keybindings
 
 - `F4` → `codejump`
+- - `F5` → `showcurrentfunction`
 - `Ctrl + Down` → next function/block
 - `Ctrl + Up` → previous function/block
 
